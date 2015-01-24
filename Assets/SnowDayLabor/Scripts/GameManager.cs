@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 		public float secondsGameHasRun = 0;
 		public Transform nextJobPreviewMount;
 
+		public AudioManager audio;
+
 		void Awake ()
 		{
 				GameManager.instance = this;
@@ -61,6 +63,8 @@ public class GameManager : MonoBehaviour
 				secondsGameHasRun = 0;
 				ui.SetPlaying ();
 				buildJobManager.StartGame ();
+				audio.PlayStartGame ();
+		audio.StartBackgroundMusic ();
 		}
 
 		public void OnGameOver ()
@@ -72,8 +76,11 @@ public class GameManager : MonoBehaviour
 						c.OnGameOver ();
 				}
 				ui.SetGameOver ();
+				audio.PlayEndGame ();
+				audio.StopBackgroundMusic ();
 
-		}
+		
+	}
 
 		public void OnRestartGame ()
 		{

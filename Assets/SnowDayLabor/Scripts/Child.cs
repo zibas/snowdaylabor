@@ -48,6 +48,7 @@ public class Child : MonoBehaviour {
 	// Triggered by player hitting the take next job button
 	public void OnTakeJob(){
 		if (currentJob == null) {
+						GameManager.instance.audio.PlayHappyToTakeJob();
 						GameManager.instance.ChangeScoreBy (-100);
 						currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
 						currentJob.snowman.transform.position = snowmanMount.transform.position;

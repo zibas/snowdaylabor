@@ -24,6 +24,7 @@ public class BuildJob {
 
 	public void Sell(){
 		if (GameManager.instance.state == GameManager.STATES.PLAYING && snowman != null) {
+						GameManager.instance.audio.PlaySellSnowman();	
 						GameManager.instance.ChangeScoreBy ((int)quality * 2);
 						UnityEngine.Object.Destroy (snowman.gameObject);
 				}
