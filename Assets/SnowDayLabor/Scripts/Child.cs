@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Child : MonoBehaviour {
 
@@ -13,16 +14,17 @@ public class Child : MonoBehaviour {
 
 	public Slider[] sliders;
 
+	public Need[] needs; 
+
 	// Use this for initialization
 	void Start () {
-		
+	
 	}
 
 	public void Reset(){
 
-
-		foreach (Slider s in sliders) {
-			s.value = 0;
+		foreach (Need n in needs) {
+			n.Reset ();
 		}
 	}
 	
@@ -35,16 +37,11 @@ public class Child : MonoBehaviour {
 			DoWork();
 		}
 
-		foreach (Slider s in sliders) {
-			float speed = 0.01f;
-			s.value += Time.deltaTime * speed;
-		}
-
 	}
 
 	// Triggered by player hitting the button to the right of a slider for a need
 	public void OnNeedPermitted(int index){
-		sliders [index].value = 0;
+		needs[index].Reset ();
 	}
 
 
