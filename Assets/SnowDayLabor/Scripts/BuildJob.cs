@@ -1,23 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BuildJob : MonoBehaviour {
+public class BuildJob {
 
-	public enum CATEGORY {MUSIC, SPORTS, SCIFI}
-	public CATEGORY state = CATEGORY.MUSIC;
-
+	public BuildJobManager.CATEGORIES category;
 
 	private float percentComplete = 0;
 
-
+	public Texture2D image;
 		
-	// Use this for initialization
-	void Start () {
-	
+	public void Advance(float amount, float quality){
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public bool IsComplete(){
+		return percentComplete >= 100;
 	}
+
+	public void Sell(){
+
+	}
+
 }

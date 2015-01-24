@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 				case STATES.INITIALIZING:
 						state = STATES.PRE_GAME;
 						ui.SetPreGame();
+						buildJobManager.ResetGame();
 						foreach(Child c in children){
 							c.Reset();
 						}

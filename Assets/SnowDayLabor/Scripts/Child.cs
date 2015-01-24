@@ -42,14 +42,29 @@ public class Child : MonoBehaviour {
 
 	}
 
+	// Triggered by player hitting the button to the right of a slider for a need
 	public void OnNeedPermitted(int index){
 		sliders [index].value = 0;
 	}
+
+
+	// Triggered by player hitting the take next job button
+	public void OnTakeJob(){
+		currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
+	}
+
 
 	// applies one unit of work to a job
 	private void DoWork(){
 		float amount = 1;
 		float quality = 1;
-		//currentJob.Advance (amount, quality);
+		if (currentJob != null) {
+						if (!currentJob.IsComplete ()) {
+								currentJob.Advance (amount, quality);
+						}
+						if (currentJob.IsComplete ()) {
+								currentJob.Sell ();
+						}
+				}
 	}
 }

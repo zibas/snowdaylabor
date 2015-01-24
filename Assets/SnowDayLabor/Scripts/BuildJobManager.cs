@@ -3,17 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BuildJobManager : MonoBehaviour {
+	public enum CATEGORIES {MUSIC, SPORTS, SCIFI}
+	public Texture2D[] images;
 
-	private List<BuildJob> activeBuildJobs = new List<BuildJob>();
+	public BuildJob jobOnDeck;
 
-	// Use this for initialization
-	void Start () {
-	
+	public void ResetGame(){
+		jobOnDeck = CreateJob ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public BuildJob ConsumeJobOnDeck(){
+		Debug.Log ("Consuming job on deck");
+		BuildJob j = jobOnDeck; 
+		jobOnDeck = CreateJob ();
+		return j;
+	}
+
+
+	private BuildJob CreateJob(){
+		BuildJob j = new BuildJob ();
+		j.category = CATEGORIES.SCIFI;
+		return j;
 	}
 
 
