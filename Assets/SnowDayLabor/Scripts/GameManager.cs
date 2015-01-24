@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 				ui.SetPlaying ();
 				buildJobManager.StartGame ();
 				audio.PlayStartGame ();
-		audio.StartBackgroundMusic ();
+				audio.StartBackgroundMusic ();
 		}
 
 		public void OnGameOver ()
