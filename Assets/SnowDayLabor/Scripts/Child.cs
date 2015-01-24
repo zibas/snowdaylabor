@@ -16,6 +16,7 @@ public class Child : MonoBehaviour {
 
 	public Transform snowmanMount;
 	public Need[] needs;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -48,11 +49,11 @@ public class Child : MonoBehaviour {
 	// Triggered by player hitting the take next job button
 	public void OnTakeJob(){
 		if (currentJob == null) {
-						GameManager.instance.ChangeScoreBy (-100);
-						currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
-						currentJob.snowman.transform.position = snowmanMount.transform.position;
-						currentJob.snowman.transform.parent = snowmanMount.transform;
-				}
+				GameManager.instance.ChangeScoreBy (-100);
+				currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
+				currentJob.snowman.transform.position = snowmanMount.transform.position;
+				currentJob.snowman.transform.parent = snowmanMount.transform;
+		}
 	}
 
 	public void OnGameOver(){
@@ -68,13 +69,13 @@ public class Child : MonoBehaviour {
 		float amount = 1;
 		float quality = 100;
 		if (currentJob != null) {
-						if (!currentJob.IsComplete ()) {
-								currentJob.Advance (amount, quality);
-						}
-						if (currentJob.IsComplete ()) {
-								currentJob.Sell ();
-								currentJob = null;
-						}
-				}
+			if (!currentJob.IsComplete ()) {
+					currentJob.Advance (amount, quality);
+			}
+			if (currentJob.IsComplete ()) {
+					currentJob.Sell ();
+					currentJob = null;
+			}
+		}
 	}
 }
