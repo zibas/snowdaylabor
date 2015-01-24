@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 		public int score = 0;
 		public float secondsPerGame = 20;
 		public float secondsGameHasRun = 0;
+		public Transform nextJobPreviewMount;
 
 		void Awake ()
 		{
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
 				case STATES.INITIALIZING:
 						state = STATES.PRE_GAME;
 						ui.SetPreGame ();
-						buildJobManager.ResetGame ();
+						buildJobManager.ClearDeck ();
 						ui.timeSlider.minValue = 0;
 						ui.timeSlider.maxValue = secondsPerGame;
 						foreach (Child c in children) {
@@ -55,13 +56,21 @@ public class GameManager : MonoBehaviour
 		public void OnStartGame ()
 		{
 				state = STATES.PLAYING;
+				Debug.Log ("Switching to " + state);
+
 				secondsGameHasRun = 0;
 				ui.SetPlaying ();
+				buildJobManager.StartGame ();
 		}
 
 		public void OnGameOver ()
 		{
 				state = STATES.END_GAME;
+				Debug.Log ("Switching to " + state);
+
+				foreach (Child c in children) {
+						c.OnGameOver ();
+				}
 				ui.SetGameOver ();
 
 		}
@@ -69,6 +78,8 @@ public class GameManager : MonoBehaviour
 		public void OnRestartGame ()
 		{
 				state = STATES.INITIALIZING;
+				Debug.Log ("Switching to " + state);
+
 		}
 	
 		public void ChangeScoreBy (int amount)

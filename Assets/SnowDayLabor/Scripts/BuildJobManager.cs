@@ -4,14 +4,27 @@ using System.Collections.Generic;
 
 public class BuildJobManager : MonoBehaviour {
 	public enum CATEGORIES {MUSIC, SPORTS, SCIFI}
-	public Texture2D[] images;
+	public GameObject [] snowmenPrefabs;
 
 	public BuildJob jobOnDeck;
 
 	private int jobCount = 0;
 
-	public void ResetGame(){
+
+
+	public void ClearDeck(){
+		Debug.Log ("Clearing deck" + jobOnDeck);
+		if (jobOnDeck != null) {
+			Destroy(jobOnDeck.snowman.gameObject);
+			jobOnDeck = null;
+			GameManager.instance.ui.nextJobDescription.text = "";
+
+		}
+	}
+
+	public void StartGame(){
 		UpdateJobOnDeck ();
+
 	}
 
 	public BuildJob ConsumeJobOnDeck(){
@@ -27,8 +40,16 @@ public class BuildJobManager : MonoBehaviour {
 		jobCount++;
 		jobOnDeck= new BuildJob ();
 		jobOnDeck.category = CATEGORIES.SCIFI;
-		GameManager.instance.ui.nextJobDescription.text = "Snow man: " + jobCount + " " + jobOnDeck.category;
-	}
 
+	
+		Snowman s = ((GameObject) GameObject.Instantiate (snowmenPrefabs [Random.Range (0, snowmenPrefabs.Length)])).GetComponent<Snowman>();
+		s.transform.position = GameManager.instance.nextJobPreviewMount.position;
+		jobOnDeck.category = s.category;
+		jobOnDeck.snowman = s;
+
+
+		GameManager.instance.ui.nextJobDescription.text = "Next: "+ s.description;
+	}
+	
 
 }

@@ -12,7 +12,9 @@ public class Child : MonoBehaviour {
 	public int childNumber = 0;
 
 	public Slider[] sliders;
-	
+
+	public Transform snowmanMount;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -50,8 +52,19 @@ public class Child : MonoBehaviour {
 
 	// Triggered by player hitting the take next job button
 	public void OnTakeJob(){
-		GameManager.instance.ChangeScoreBy(-100);
-		currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
+		if (currentJob == null) {
+						GameManager.instance.ChangeScoreBy (-100);
+						currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
+						currentJob.snowman.transform.position = snowmanMount.transform.position;
+						currentJob.snowman.transform.parent = snowmanMount.transform;
+				}
+	}
+
+	public void OnGameOver(){
+
+		if (currentJob != null) {
+			currentJob.Sell();
+		}
 	}
 
 
