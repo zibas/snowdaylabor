@@ -12,7 +12,7 @@ public class Child : MonoBehaviour {
 	public int childNumber = 0;
 
 	public Slider[] sliders;
-
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -50,6 +50,7 @@ public class Child : MonoBehaviour {
 
 	// Triggered by player hitting the take next job button
 	public void OnTakeJob(){
+		GameManager.instance.ChangeScoreBy(-100);
 		currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
 	}
 
@@ -57,13 +58,14 @@ public class Child : MonoBehaviour {
 	// applies one unit of work to a job
 	private void DoWork(){
 		float amount = 1;
-		float quality = 1;
+		float quality = 100;
 		if (currentJob != null) {
 						if (!currentJob.IsComplete ()) {
 								currentJob.Advance (amount, quality);
 						}
 						if (currentJob.IsComplete ()) {
 								currentJob.Sell ();
+								currentJob = null;
 						}
 				}
 	}

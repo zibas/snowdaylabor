@@ -9,6 +9,9 @@ public class UI : MonoBehaviour {
 	public Button restartButton;
 	public GameObject childDetailsPanel;
 	public Text scoreField;
+	public Text nextJobDescription;
+
+	public Slider timeSlider;
 	
 
 
@@ -36,7 +39,7 @@ public class UI : MonoBehaviour {
 	public void SetGameOver(){
 		startButton.gameObject.SetActive (false);
 		restartButton.gameObject.SetActive (true);
-		childDetailsPanel.gameObject.SetActive (true);
+		childDetailsPanel.gameObject.SetActive (false);
 		scoreField.gameObject.SetActive (true);
 	}
 

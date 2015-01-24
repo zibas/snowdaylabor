@@ -8,22 +8,26 @@ public class BuildJobManager : MonoBehaviour {
 
 	public BuildJob jobOnDeck;
 
+	private int jobCount = 0;
+
 	public void ResetGame(){
-		jobOnDeck = CreateJob ();
+		UpdateJobOnDeck ();
 	}
 
 	public BuildJob ConsumeJobOnDeck(){
 		Debug.Log ("Consuming job on deck");
 		BuildJob j = jobOnDeck; 
-		jobOnDeck = CreateJob ();
+		UpdateJobOnDeck ();
+
 		return j;
 	}
 
 
-	private BuildJob CreateJob(){
-		BuildJob j = new BuildJob ();
-		j.category = CATEGORIES.SCIFI;
-		return j;
+	private void UpdateJobOnDeck(){
+		jobCount++;
+		jobOnDeck= new BuildJob ();
+		jobOnDeck.category = CATEGORIES.SCIFI;
+		GameManager.instance.ui.nextJobDescription.text = "Snow man: " + jobCount + " " + jobOnDeck.category;
 	}
 
 
