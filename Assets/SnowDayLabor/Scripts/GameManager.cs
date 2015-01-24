@@ -29,8 +29,26 @@ public class GameManager : MonoBehaviour
 				switch (state) {
 				case STATES.INITIALIZING:
 						state = STATES.PRE_GAME;
+						ui.SetPreGame();
+						foreach(Child c in children){
+							c.Reset();
+						}
 						break;
 				}
 
 		}
+
+		public void OnStartGame(){
+			state = STATES.PLAYING;
+			ui.SetPlaying ();
+		}
+
+	public void OnGameOver(){
+		state = STATES.END_GAME;
+		ui.SetGameOver ();
+
+	}
+	public void OnRestartGame(){
+		state = STATES.INITIALIZING;
+	}
 }
