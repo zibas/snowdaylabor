@@ -28,6 +28,7 @@ public class Child : MonoBehaviour
 	
 				System.Array values = System.Enum.GetValues (typeof(BuildJobManager.CATEGORIES));
 				preference = (BuildJobManager.CATEGORIES)values.GetValue (Random.Range (0, values.Length));
+
 		}
 
 		public void Reset ()
@@ -46,6 +47,10 @@ public class Child : MonoBehaviour
 				animator.SetBool ("Run", false);
 				animator.gameObject.SetActive (true);
 				takeJobButton.gameObject.SetActive (true);
+				//this is an override that's necessary so it can re-set
+				needs [0].decay = 0.05f;
+				needs [1].decay = 0.01f;
+				needs [2].decay = 0.02f;
 
 		}
 
@@ -82,8 +87,16 @@ public class Child : MonoBehaviour
 
 						if (currentJob.category == preference) {
 								GameManager.instance.audio.PlayHappyToTakeJob ();
+								// if they like the job, their motivation doesn't decay as fast
+								needs [0].decay -= 0.02f;
+								// but make sure their decay never hits or goes below zero
+								if (needs[0].decay <= 0.0f) { needs [0].decay =0.01f;}
 						} else {
 								GameManager.instance.audio.PlaySadToTakeJob ();
+								// their motivation decays faster for each snowman they make that they arent interested in
+								needs [0].decay += 0.02f;
+								// but make sure their decay never passes .2
+								if (needs[0].decay > 0.2f) { needs [0].decay =0.9f;}
 						}
 
 				}
