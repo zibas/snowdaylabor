@@ -20,6 +20,7 @@ public class Child : MonoBehaviour
 		public Button takeJobButton;
 		public Text saleAmount;
 		private bool isDoingSellRoutine = false;
+		private bool hasGrumbledRecently = false;
 
 
 		// Use this for initialization
@@ -57,6 +58,20 @@ public class Child : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
+			//should I grumble from low motivation?
+			if (needs [0].mySlider.value == 0.0f) 
+			{
+				if(hasGrumbledRecently == false)
+				{
+					GameManager.instance.audio.PlayGenerallyNegative (childNumber);
+					hasGrumbledRecently = true;
+				}
+			}
+			else
+			{
+				hasGrumbledRecently = false;
+			}
+
 			//am I doing the peepee dance because my bladder is at zero?
 			if (needs [2].mySlider.value == 0.0f)
 			{
