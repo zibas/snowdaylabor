@@ -34,7 +34,7 @@ public class Child : MonoBehaviour
 		public void Reset ()
 		{
 
-				animator.SetBool ("Run", false);
+				animator.SetTrigger ("Idle");
 				animator.gameObject.SetActive (false);
 				saleAmount.gameObject.SetActive (false);
 				foreach (Need n in needs) {
@@ -44,7 +44,7 @@ public class Child : MonoBehaviour
 
 		public void OnGameStart ()
 		{
-				animator.SetBool ("Run", false);
+				animator.SetTrigger ("Idle");
 				animator.gameObject.SetActive (true);
 				takeJobButton.gameObject.SetActive (true);
 				//this is an override that's necessary so it can re-set
@@ -83,16 +83,17 @@ public class Child : MonoBehaviour
 						currentJob.snowman.transform.position = snowmanMount.transform.position;
 						currentJob.snowman.transform.parent = snowmanMount.transform;
 						currentJob.snowman.transform.localScale = new Vector3 (6, 6, 6);
-						animator.SetBool ("Run", true);
 
 						if (currentJob.category == preference) {
 								GameManager.instance.audio.PlayHappyToTakeJob ();
+								animator.SetTrigger ("BuildHappy");
 								// if they like the job, their motivation doesn't decay as fast
 								needs [0].decay -= 0.02f;
 								// but make sure their decay never hits or goes below zero
 								if (needs[0].decay <= 0.0f) { needs [0].decay =0.01f;}
 						} else {
 								GameManager.instance.audio.PlaySadToTakeJob ();
+								animator.SetTrigger ("BuildNeutral");
 								// their motivation decays faster for each snowman they make that they arent interested in
 								needs [0].decay += 0.02f;
 								// but make sure their decay never passes .2
@@ -143,7 +144,7 @@ public class Child : MonoBehaviour
 		IEnumerator SellRoutine ()
 		{
 				GameManager.instance.audio.PlaySellSnowman ();	
-				animator.SetBool ("Run", false);
+				animator.SetTrigger ("Idle");
 				saleAmount.gameObject.SetActive (true);
 				saleAmount.text = currentJob.GetValue ().ToString ("C0");
 				yield return new WaitForSeconds (3);
