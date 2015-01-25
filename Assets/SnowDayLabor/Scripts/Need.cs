@@ -16,5 +16,5 @@ public class Need : MonoBehaviour {
 	public void Reset(){ mySlider.value = 100; }
 
 	// Update is called once per frame
-	void Update () { mySlider.value -= Time.deltaTime * decay; }
+	public void doUpdate () { mySlider.value -= Time.deltaTime * decay; }
 }
