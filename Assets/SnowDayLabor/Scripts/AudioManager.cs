@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
@@ -8,13 +9,33 @@ public class AudioManager : MonoBehaviour
 	public bool muteMusic = false;
 
 
-	public AudioClip[] happyToTakeJobClips;
-	public AudioClip[] neutralToTakeJobClips;
-	public AudioClip[] sadToTakeJobClips;
-	public AudioClip[] sellSnowmanClips;
+	private List<AudioClip[]> happyToTakeJobClips = new List<AudioClip[]>();
+	private List<AudioClip[]>  sadToTakeJobClips = new List<AudioClip[]>();
+	private List<AudioClip[]>  finishedSnowmanClips = new List<AudioClip[]>();
+	private List<AudioClip[]>  generallyNegativeClips = new List<AudioClip[]>();
 
-	public AudioClip[] generallyHappyClips;
-	public AudioClip[] generallyNegativeClips;
+	//Kid 1
+	public AudioClip[] happyToTakeJobClips1;
+	public AudioClip[] sadToTakeJobClips1;
+	public AudioClip[] finishedSnowmanClips1;
+	public AudioClip[] generallyNegativeClips1;
+
+	//Kid 2
+	public AudioClip[] happyToTakeJobClips2;
+	public AudioClip[] sadToTakeJobClips2;
+	public AudioClip[] finishedSnowmanClips2;
+	public AudioClip[] generallyNegativeClips2;
+
+	//Kid 3
+
+	public AudioClip[] happyToTakeJobClips3;
+	public AudioClip[] sadToTakeJobClips3;
+	public AudioClip[] finishedSnowmanClips3;
+	public AudioClip[] generallyNegativeClips3;
+
+
+	public AudioClip[] sellSnowmanClips;
+	 public AudioClip[] generallyHappyClips;
 	public AudioClip[] startGameClips;
 	public AudioClip[] endGameClips;
 
@@ -40,7 +61,21 @@ public class AudioManager : MonoBehaviour
 	
 	public void Awake ()
 	{
-		
+
+		happyToTakeJobClips.Add(happyToTakeJobClips1);
+		happyToTakeJobClips.Add(happyToTakeJobClips2);
+		happyToTakeJobClips.Add(happyToTakeJobClips3);
+	
+		sadToTakeJobClips.Add(sadToTakeJobClips1);
+		sadToTakeJobClips.Add(sadToTakeJobClips2);
+		sadToTakeJobClips.Add(sadToTakeJobClips3);
+		finishedSnowmanClips.Add(finishedSnowmanClips1);
+		finishedSnowmanClips.Add(finishedSnowmanClips2);
+		finishedSnowmanClips.Add(finishedSnowmanClips3);
+		generallyNegativeClips.Add(generallyNegativeClips1);
+		generallyNegativeClips.Add(generallyNegativeClips2);
+		generallyNegativeClips.Add(generallyNegativeClips3);
+
 		audioSourcePool = new AudioSource[audioPoolMax];
 		for (int i = 0; i < audioPoolMax; i++) {
 			audioSourcePool [i] = ((GameObject)GameObject.Instantiate(Resources.Load("Prefabs/AudioSource"))).GetComponent<AudioSource>();
@@ -79,19 +114,21 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
-	public void PlayHappyToTakeJob ()
+	public void PlayHappyToTakeJob (int kid)
 	{
-		PlayRandomClip (happyToTakeJobClips);
+
+		PlayRandomClip (happyToTakeJobClips[kid]);
 	}
 
-	public void PlaySadToTakeJob ()
+	public void PlaySadToTakeJob (int kid)
 	{
-		PlayRandomClip (sadToTakeJobClips);
+		PlayRandomClip (sadToTakeJobClips[kid]);
 	}
 
-	public void PlaySellSnowman ()
+	public void PlaySellSnowman (int kid)
 	{
 		PlayRandomClip (sellSnowmanClips);
+		PlayRandomClip (finishedSnowmanClips[kid]);
 	}
 
 	public void PlayStartGame(){
@@ -110,12 +147,12 @@ public class AudioManager : MonoBehaviour
 		backgroundMusicSource.Stop ();
 	}
 
-	public void PlayGenerallyHappy(){
+	public void PlayGenerallyHappy(int kid){
 		PlayRandomClip (generallyHappyClips);
 	}
 
-	public void PlayGenerallyNegative(){
-		PlayRandomClip (generallyNegativeClips);
+	public void PlayGenerallyNegative(int kid){
+		PlayRandomClip (generallyNegativeClips[kid]);
 	}
 	
 

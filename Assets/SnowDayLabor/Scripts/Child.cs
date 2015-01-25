@@ -85,14 +85,14 @@ public class Child : MonoBehaviour
 						currentJob.snowman.transform.localScale = new Vector3 (6, 6, 6);
 
 						if (currentJob.category == preference) {
-								GameManager.instance.audio.PlayHappyToTakeJob ();
+								GameManager.instance.audio.PlayHappyToTakeJob (childNumber);
 								animator.SetTrigger ("BuildHappy");
 								// if they like the job, their motivation doesn't decay as fast
 								needs [0].decay -= 0.02f;
 								// but make sure their decay never hits or goes below zero
 								if (needs[0].decay <= 0.0f) { needs [0].decay =0.01f;}
 						} else {
-								GameManager.instance.audio.PlaySadToTakeJob ();
+								GameManager.instance.audio.PlaySadToTakeJob (childNumber);
 								animator.SetTrigger ("BuildNeutral");
 								// their motivation decays faster for each snowman they make that they arent interested in
 								needs [0].decay += 0.02f;
@@ -143,7 +143,7 @@ public class Child : MonoBehaviour
 
 		IEnumerator SellRoutine ()
 		{
-				GameManager.instance.audio.PlaySellSnowman ();	
+				GameManager.instance.audio.PlaySellSnowman (childNumber);	
 				animator.SetTrigger ("Idle");
 				saleAmount.gameObject.SetActive (true);
 				saleAmount.text = currentJob.GetValue ().ToString ("C0");
