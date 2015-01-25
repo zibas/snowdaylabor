@@ -71,7 +71,7 @@ public class Child : MonoBehaviour
 				{
 					onBreak = false;
 					onBreakClock = 0;
-					animator.gameObject.SetActive (true);
+					animator.GetComponent<SpriteRenderer>().enabled = true;
 				}
 			}
 
@@ -135,8 +135,8 @@ public class Child : MonoBehaviour
 			{
 				needs [index].Reset ();
 				onBreak = true;
-				animator.gameObject.SetActive (false);
-			}
+			animator.GetComponent<SpriteRenderer>().enabled = false;
+		}
 		}
 
 
