@@ -13,8 +13,8 @@ public class Need : MonoBehaviour {
 	// Use this for initialization
 	void Start () {}
 
-	public void Reset(){ mySlider.value = 0; }
+	public void Reset(){ mySlider.value = 100; }
 
 	// Update is called once per frame
-	void Update () { mySlider.value += Time.deltaTime * decay; }
+	void Update () { mySlider.value -= Time.deltaTime * decay; }
 }
