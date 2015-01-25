@@ -20,18 +20,23 @@ public class Snowman : MonoBehaviour
 		public Vignetting vignetting;
 		private int[] columns;
 
+	public GameObject distortedGO;
+
 		void Awake ()
 		{
-
+		#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_ANDROID ||UNITY_STANDALONE_LINUX
+				distortedGO.transform.localRotation = Quaternion.Euler (new Vector3 (270, 0, 0));
+		#endif
 				distorted = new RenderTexture (512, 512, 32, RenderTextureFormat.ARGB32);
 				distorted.Create ();
 				renderCamera.targetTexture = distorted;
+				
 
 				newTex = new Texture2D (distorted.width, distorted.height, TextureFormat.ARGB32, false);
 				for (int x = 0; x < newTex.width; x++) {
-						for (int y = 0; y < newTex.height; y++) {
-								newTex.SetPixel (x, y, Color.clear);
-						}
+					for (int y = 0; y < newTex.height; y++) {
+						newTex.SetPixel (x, y, Color.clear);
+					}
 				}
 				newTex.Apply ();
 				target.material.mainTexture = newTex;
@@ -62,6 +67,9 @@ public class Snowman : MonoBehaviour
 				target.gameObject.SetActive (true);
 				twirl.radius = new Vector2 (Random.Range (0.2f, 1f), Random.Range (0.5f, 0.75f)); 
 				twirl.center = new Vector2 (Random.Range (0f, 1f), Random.Range (0.3f, 0.9f)); 
+
+		//camera.gameObject.transform.localScale = new Vector3 (camera.gameObject.transform.localScale.x, -camera.gameObject.transform.localScale.y, camera.gameObject.transform.localScale.z);
+		//camera.gameObject.transform.localScale = new Vector3 (0.5f, -0.5f, 0.5f);
 		}
 	
 		void CopyToTarget (RenderTexture rt, int x, int y, int xMax, int yMax)
@@ -115,8 +123,8 @@ public class Snowman : MonoBehaviour
 				int yStart = Mathf.CeilToInt (chunk / xChunkCount) * chunkHeight;
 				//Debug.Log ("Chunk: " + xStart+", "+yStart);
 
-				CopyToTarget (distorted, xStart, yStart, xStart + chunkWidth, yStart + chunkHeight);
-				//Debug.Log (newTex.width + ", " + newTex.height);
+		CopyToTarget (distorted, xStart,  yStart, xStart + chunkWidth, yStart + chunkHeight);
+		//Debug.Log (newTex.width + ", " + newTex.height);
 				target.material.mainTexture = newTex;
 
 		}
