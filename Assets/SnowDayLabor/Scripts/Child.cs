@@ -67,6 +67,7 @@ public class Child : MonoBehaviour
 				if (currentJob == null) {
 						GameManager.instance.ChangeScoreBy (-100);
 						currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
+						currentJob.snowman.PrepareToBuild();
 						currentJob.snowman.transform.position = snowmanMount.transform.position;
 						currentJob.snowman.transform.parent = snowmanMount.transform;
 						currentJob.snowman.transform.localScale = new Vector3(6, 6, 6);
@@ -97,17 +98,21 @@ public class Child : MonoBehaviour
 		private void DoWork ()
 		{
 				float amount = 0.1f;
-				float quality = 50.0f;
+				float quality = 100.0f;
 
 				if (currentJob != null) {
 						if (!currentJob.IsComplete ()) {
-								if (currentJob.category == preference) {
-										amount *= 5f;
-										quality *= 2f;
-								}
+								
 								amount *= motivation.Evaluate (needs [0].mySlider.value);
 								amount *= energy.Evaluate (needs [1].mySlider.value);
+								quality *= motivation.Evaluate (needs [2].mySlider.value);
 
+								if (currentJob.category == preference) {
+									amount *= 5f;
+									quality += 50f;
+									quality = Mathf.Min(quality, 100); // Don't let quality get over 100
+								}
+									
 								currentJob.Advance (amount, quality);
 						}
 						if (currentJob.IsComplete ()) {

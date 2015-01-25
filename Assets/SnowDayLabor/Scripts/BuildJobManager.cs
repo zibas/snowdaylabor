@@ -48,7 +48,6 @@ public class BuildJobManager : MonoBehaviour {
 		jobOnDeck.category = s.category;
 		jobOnDeck.snowman = s;
 
-
 		GameManager.instance.ui.nextJobDescription.text = "Next: "+ s.description;
 	}
 	

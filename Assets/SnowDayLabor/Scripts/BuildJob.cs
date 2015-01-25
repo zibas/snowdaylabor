@@ -14,7 +14,9 @@ public class BuildJob {
 		if (GameManager.instance.state == GameManager.STATES.PLAYING) {
 						percentComplete += amount;
 						quality = (this.quality + quality) / 2;
-						Debug.Log (this);
+					//	Debug.Log (this);
+						snowman.SetQuality(quality);
+						snowman.DoNextChunk(percentComplete);
 				}
 	}
 
