@@ -9,6 +9,8 @@ public class Child : MonoBehaviour
 		public BuildJob currentJob;
 		private float doWorkClock = 0;
 		private float doWorkPeriod = 0.2f;
+		private float onBreakClock = 0;
+		private float onBreakPeriod = 5.0f;
 		private BuildJobManager.CATEGORIES preference;
 		public int childNumber = 0;
 		public Slider[] sliders;
@@ -20,6 +22,8 @@ public class Child : MonoBehaviour
 		public Button takeJobButton;
 		public Text saleAmount;
 		private bool isDoingSellRoutine = false;
+		private bool hasGrumbledRecently = false;
+		private bool onBreak = false;
 
 
 		// Use this for initialization
@@ -57,6 +61,34 @@ public class Child : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
+
+			doWorkClock += Time.deltaTime;
+
+			if (onBreak == true)
+			{
+				onBreakClock += Time.deltaTime;
+				if (onBreakClock >= onBreakPeriod)
+				{
+					onBreak = false;
+					onBreakClock = 0;
+					animator.gameObject.SetActive (true);
+				}
+			}
+
+			//should I grumble from low motivation?
+			if (needs [0].mySlider.value == 0.0f) 
+			{
+				if(hasGrumbledRecently == false)
+				{
+					GameManager.instance.audio.PlayGenerallyNegative (childNumber);
+					hasGrumbledRecently = true;
+				}
+			}
+			else
+			{
+				hasGrumbledRecently = false;
+			}
+
 			//am I doing the peepee dance because my bladder is at zero?
 			if (needs [2].mySlider.value == 0.0f)
 			{
@@ -81,15 +113,13 @@ public class Child : MonoBehaviour
 						if (currentJob.category == preference)
 						{
 							animator.SetTrigger ("BuildHappy");
-							
 						} 
 						else 
 						{
 							animator.SetTrigger ("BuildNeutral");
 						}
-						
-						doWorkClock += Time.deltaTime;
-						if (doWorkClock >= doWorkPeriod)
+				
+						if (doWorkClock >= doWorkPeriod && onBreak == false)
 						{
 							DoWork ();
 						}
@@ -101,7 +131,12 @@ public class Child : MonoBehaviour
 		// Triggered by player hitting the button to the right of a slider for a need
 		public void OnNeedPermitted (int index)
 		{
+			if (onBreak == false)
+			{
 				needs [index].Reset ();
+				onBreak = true;
+				animator.gameObject.SetActive (false);
+			}
 		}
 
 
