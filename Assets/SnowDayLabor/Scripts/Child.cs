@@ -13,19 +13,27 @@ public class Child : MonoBehaviour
 		public Slider[] sliders;
 		public Transform snowmanMount;
 		public Need[] needs;
+		public Animator animator;
 
 		// Use this for initialization
 		void Start ()
 		{
-	
+
 		}
 
 		public void Reset ()
 		{
-
+				animator.SetBool ("Run", false);
+				animator.gameObject.SetActive (false);
 				foreach (Need n in needs) {
 						n.Reset ();
 				}
+		}
+
+		public void OnGameStart ()
+		{
+				animator.SetBool ("Run", false);
+				animator.gameObject.SetActive (true);
 		}
 	
 
@@ -52,11 +60,13 @@ public class Child : MonoBehaviour
 		{
 				if (currentJob == null) {
 						// TODO: see if they're happy or not
+						animator.SetBool ("Run", true);
 						GameManager.instance.audio.PlayHappyToTakeJob ();
 						GameManager.instance.ChangeScoreBy (-100);
 						currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
 						currentJob.snowman.transform.position = snowmanMount.transform.position;
 						currentJob.snowman.transform.parent = snowmanMount.transform;	
+						currentJob.snowman.transform.localScale = new Vector3(6,6,6);
 				}
 		}
 
@@ -85,6 +95,7 @@ public class Child : MonoBehaviour
 								currentJob.Advance (amount, quality);
 						}
 						if (currentJob.IsComplete ()) {
+								animator.SetBool ("Run", false);
 								currentJob.Sell ();
 								currentJob = null;
 						}

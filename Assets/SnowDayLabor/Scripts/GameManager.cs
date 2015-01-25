@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
 		public float secondsPerGame = 20;
 		public float secondsGameHasRun = 0;
 		public Transform nextJobPreviewMount;
-
 		public AudioManager audio;
 
 		void Awake ()
@@ -59,7 +58,9 @@ public class GameManager : MonoBehaviour
 		{
 				state = STATES.PLAYING;
 				Debug.Log ("Switching to " + state);
-
+				foreach (Child c in children) {
+						c.OnGameStart ();
+				}
 				secondsGameHasRun = 0;
 				ui.SetPlaying ();
 				buildJobManager.StartGame ();
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour
 				audio.StopBackgroundMusic ();
 
 		
-	}
+		}
 
 		public void OnRestartGame ()
 		{

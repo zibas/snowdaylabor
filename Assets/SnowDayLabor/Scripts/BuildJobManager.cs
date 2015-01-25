@@ -43,6 +43,7 @@ public class BuildJobManager : MonoBehaviour {
 
 	
 		Snowman s = ((GameObject) GameObject.Instantiate (snowmenPrefabs [Random.Range (0, snowmenPrefabs.Length)])).GetComponent<Snowman>();
+		s.transform.localScale = Vector3.one;
 		s.transform.position = GameManager.instance.nextJobPreviewMount.position;
 		jobOnDeck.category = s.category;
 		jobOnDeck.snowman = s;
