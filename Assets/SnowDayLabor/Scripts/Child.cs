@@ -57,12 +57,45 @@ public class Child : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-
-				doWorkClock += Time.deltaTime;
-				if (doWorkClock >= doWorkPeriod) {
-						DoWork ();
+			//am I doing the peepee dance because my bladder is at zero?
+			if (needs [2].mySlider.value == 0.0f)
+			{
+				animator.SetTrigger ("Dance");
+			}
+			else 
+			{
+				//am I resting because my Energy is at zero?
+				if (needs [1].mySlider.value == 0.0f)
+				{
+					animator.SetTrigger ("Rest");
 				}
-
+				else
+				{
+					if (currentJob == null)
+					{
+						animator.SetTrigger ("Idle");
+					}
+					else
+					{
+						//I'm working! Am I happy with this snowman or not?
+						if (currentJob.category == preference)
+						{
+							animator.SetTrigger ("BuildHappy");
+							
+						} 
+						else 
+						{
+							animator.SetTrigger ("BuildNeutral");
+						}
+						
+						doWorkClock += Time.deltaTime;
+						if (doWorkClock >= doWorkPeriod)
+						{
+							DoWork ();
+						}
+					}
+				}
+			}
 		}
 
 		// Triggered by player hitting the button to the right of a slider for a need
