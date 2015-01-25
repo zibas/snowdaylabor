@@ -13,7 +13,8 @@ public class BuildJob {
 	public void Advance(float amount, float quality){
 		if (GameManager.instance.state == GameManager.STATES.PLAYING) {
 						percentComplete += amount;
-						quality = (this.quality + quality) / 2;
+						
+						this.quality = (this.quality + quality) / 2;
 					//	Debug.Log (this);
 						snowman.SetQuality(quality);
 						snowman.DoNextChunk(percentComplete);
@@ -26,12 +27,15 @@ public class BuildJob {
 
 	public void Sell(){
 		if (GameManager.instance.state == GameManager.STATES.PLAYING && snowman != null) {
-						GameManager.instance.audio.PlaySellSnowman();	
 						GameManager.instance.ChangeScoreBy ((int)quality * 2);
 						UnityEngine.Object.Destroy (snowman.gameObject);
 				}
 	}
 
+
+	public int GetValue(){
+		return (int)quality * 2;
+	}
 
 	public override string ToString ()
 	{

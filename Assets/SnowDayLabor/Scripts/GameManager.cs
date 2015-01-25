@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
 		public void OnStartGame ()
 		{
 				state = STATES.PLAYING;
+				ui.scoreField.text = "$0.00";
+
 				Debug.Log ("Switching to " + state);
 				foreach (Child c in children) {
 						c.OnGameStart ();
@@ -70,17 +72,17 @@ public class GameManager : MonoBehaviour
 
 		public void OnGameOver ()
 		{
+				foreach (Child c in children) {
+					c.OnGameOver ();
+				}
 				state = STATES.END_GAME;
 				Debug.Log ("Switching to " + state);
 
-				foreach (Child c in children) {
-						c.OnGameOver ();
-				}
+				
 				ui.SetGameOver ();
 				audio.PlayEndGame ();
 				audio.StopBackgroundMusic ();
 
-		
 		}
 
 		public void OnRestartGame ()

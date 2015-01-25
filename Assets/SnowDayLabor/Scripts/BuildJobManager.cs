@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BuildJobManager : MonoBehaviour {
-	public enum CATEGORIES {MUSIC, SPORTS, SCIFI}
+	public enum CATEGORIES {VANILLA, MUSIC, SPORTS, ART}
 	public GameObject [] snowmenPrefabs;
 
 	public BuildJob jobOnDeck;
@@ -39,8 +39,6 @@ public class BuildJobManager : MonoBehaviour {
 	private void UpdateJobOnDeck(){
 		jobCount++;
 		jobOnDeck= new BuildJob ();
-		jobOnDeck.category = CATEGORIES.SCIFI;
-
 	
 		Snowman s = ((GameObject) GameObject.Instantiate (snowmenPrefabs [Random.Range (0, snowmenPrefabs.Length)])).GetComponent<Snowman>();
 		s.transform.localScale = Vector3.one;
@@ -48,7 +46,7 @@ public class BuildJobManager : MonoBehaviour {
 		jobOnDeck.category = s.category;
 		jobOnDeck.snowman = s;
 
-		GameManager.instance.ui.nextJobDescription.text = "Next: "+ s.description;
+		//GameManager.instance.ui.nextJobDescription.text = "Next: "+ s.description;
 	}
 	
 

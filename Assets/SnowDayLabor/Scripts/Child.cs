@@ -17,6 +17,10 @@ public class Child : MonoBehaviour
 		public AnimationCurve energy;
 		public AnimationCurve motivation;
 		public Animator animator;
+		public Button takeJobButton;
+		public Text saleAmount;
+		private bool isDoingSellRoutine = false;
+
 
 		// Use this for initialization
 		void Start ()
@@ -31,7 +35,7 @@ public class Child : MonoBehaviour
 
 				animator.SetBool ("Run", false);
 				animator.gameObject.SetActive (false);
-
+				saleAmount.gameObject.SetActive (false);
 				foreach (Need n in needs) {
 						n.Reset ();
 				}
@@ -41,6 +45,8 @@ public class Child : MonoBehaviour
 		{
 				animator.SetBool ("Run", false);
 				animator.gameObject.SetActive (true);
+				takeJobButton.gameObject.SetActive (true);
+
 		}
 
 		// Update is called once per frame
@@ -65,31 +71,30 @@ public class Child : MonoBehaviour
 		public void OnTakeJob ()
 		{
 				if (currentJob == null) {
+						takeJobButton.gameObject.SetActive (false);
 						GameManager.instance.ChangeScoreBy (-100);
 						currentJob = GameManager.instance.buildJobManager.ConsumeJobOnDeck ();
-						currentJob.snowman.PrepareToBuild();
+						currentJob.snowman.PrepareToBuild ();
 						currentJob.snowman.transform.position = snowmanMount.transform.position;
 						currentJob.snowman.transform.parent = snowmanMount.transform;
-						currentJob.snowman.transform.localScale = new Vector3(6, 6, 6);
+						currentJob.snowman.transform.localScale = new Vector3 (6, 6, 6);
 						animator.SetBool ("Run", true);
 
-			if(currentJob.category == preference)
-			{
-				GameManager.instance.audio.PlayHappyToTakeJob();
-			}
-			else
-			{
-				GameManager.instance.audio.PlaySadToTakeJob();
-			}
+						if (currentJob.category == preference) {
+								GameManager.instance.audio.PlayHappyToTakeJob ();
+						} else {
+								GameManager.instance.audio.PlaySadToTakeJob ();
+						}
 
 				}
 		}
 
 		public void OnGameOver ()
 		{
-
+		Debug.Log ("child game over: " + currentJob);
 				if (currentJob != null) {
-						currentJob.Sell ();
+						Destroy (currentJob.snowman.gameObject);
+						currentJob = null;
 				}
 		}
 
@@ -108,18 +113,35 @@ public class Child : MonoBehaviour
 								quality *= motivation.Evaluate (needs [2].mySlider.value);
 
 								if (currentJob.category == preference) {
-									amount *= 5f;
-									quality += 50f;
-									quality = Mathf.Min(quality, 100); // Don't let quality get over 100
+										amount *= 5f;
+										quality += 50f;
+										quality = Mathf.Min (quality, 100); // Don't let quality get over 100
 								}
 									
 								currentJob.Advance (amount, quality);
-						}
-						if (currentJob.IsComplete ()) {
-								animator.SetBool ("Run", false);
-								currentJob.Sell ();
-								currentJob = null;
+						} else if (currentJob.IsComplete () && !isDoingSellRoutine) {
+								isDoingSellRoutine = true;
+
+								StartCoroutine (SellRoutine ());
 						}
 				}
+		}
+
+		IEnumerator SellRoutine ()
+		{
+				GameManager.instance.audio.PlaySellSnowman ();	
+				animator.SetBool ("Run", false);
+				saleAmount.gameObject.SetActive (true);
+				saleAmount.text = currentJob.GetValue ().ToString ("C0");
+				yield return new WaitForSeconds (3);
+				currentJob.Sell ();
+
+				currentJob = null;
+				takeJobButton.gameObject.SetActive (true);
+				isDoingSellRoutine = false;
+				saleAmount.gameObject.SetActive (false);
+
+		
+		
 		}
 }
