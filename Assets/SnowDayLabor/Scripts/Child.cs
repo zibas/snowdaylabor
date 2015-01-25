@@ -52,9 +52,9 @@ public class Child : MonoBehaviour
 				animator.gameObject.SetActive (true);
 				takeJobButton.gameObject.SetActive (true);
 				//this is an override that's necessary so it can re-set
-				needs [0].decay = 0.02f;
-				needs [1].decay = 0.01f;
-				needs [2].decay = 0.015f;
+				needs [0].decay = 0.015f;
+				needs [1].decay = 0.005f;
+				needs [2].decay = 0.01f;
 
 		}
 
@@ -64,21 +64,23 @@ public class Child : MonoBehaviour
 
 			doWorkClock += Time.deltaTime;
 
-			if (onBreak == true) {
-						onBreakClock += Time.deltaTime;
-						if (onBreakClock >= onBreakPeriod) {
-								onBreak = false;
-								onBreakClock = 0;
-								animator.GetComponent<SpriteRenderer> ().enabled = true;
-						}
-				}
-				else
+			if (onBreak == true)
+			{
+				onBreakClock += Time.deltaTime;
+				if (onBreakClock >= onBreakPeriod)
 				{
-					foreach (Need n in needs)
-					{
-						n.doUpdate();
-					}
+						onBreak = false;
+						onBreakClock = 0;
+						animator.GetComponent<SpriteRenderer> ().enabled = true;
 				}
+			}
+			else
+			{
+				foreach (Need n in needs)
+				{
+					n.doUpdate();
+				}
+			}
 
 			//should I grumble from low motivation?
 			if (needs [0].mySlider.value == 0.0f) 
